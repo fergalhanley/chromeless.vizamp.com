@@ -1,0 +1,197 @@
+[
+  {
+    "name": "emerald",
+    "target": "2d-draw",
+    "script": "green = ~~(y1 / h * 256)"
+  },
+  {
+    "name": "sapphire",
+    "target": "2d-draw",
+    "script": "blue = ~~(y1 / h * 256)"
+  },
+  {
+    "name": "ruby",
+    "target": "2d-draw",
+    "script": "red = ~~(y1 / h * 256)"
+  },
+  {
+    "name": "blackhole",
+    "target": "2d-draw",
+    "script": "opacity = 1;"
+  },
+  {
+    "name": "punk",
+    "target": "2d-draw",
+    "script": "blue = 50 + i % 206; red = (i % 206) * 3"
+  },
+  {
+    "name": "autumn",
+    "target": "2d-draw",
+    "script": "red = 50 + i % 206; green = 20 + i % 206"
+  },
+  {
+    "name": "gold",
+    "target": "2d-draw",
+    "script": "blue = ~~(t * r); red = i % 206; green = i % 206"
+  },
+  {
+    "name": "candy",
+    "target": "2d-draw",
+    "script": "blue = ~~(t * r); green = i % 206; red = i % 150"
+  },
+  {
+    "name": "rainbow",
+    "target": "2d-draw",
+    "script": "red = ~~(y1 / h * 256); green = ~~(x1 / w * 256); blue = i % 256"
+  },
+  {
+    "name": "rainbow2",
+    "target": "2d-draw",
+    "script": "red = ~~(y1 / h * 256); green = ~~(x1 / w * 256); blue = ~~(x2 / w * 256)"
+  },
+  {
+    "name": "organic",
+    "target": "2d-draw",
+    "script": "green = 50 + i % 206; red = i % 206; blue = i % 206"
+  },
+  {
+    "name": "violet",
+    "target": "2d-draw",
+    "script": "blue = 50 + i % 206; red = i % 206"
+  },
+  {
+    "name": "fire",
+    "target": "2d-draw",
+    "script": "red = 50 + i % 206; green = i % 206"
+  },
+  {
+    "name": "ice",
+    "target": "2d-draw",
+    "script": "blue = 50 + i % 206; green = 20 + i % 206"
+  },
+  {
+    "name": "shadow",
+    "target": "2d-background",
+    "script": "opacity = 0.05"
+  },
+  {
+    "name": "long-shadow",
+    "target": "2d-background",
+    "script": "opacity = 0.005"
+  },
+  {
+    "name": "black",
+    "target": "2d-background",
+    "script": "red = 0; green = 0; blue = 0"
+  },
+  {
+    "name": "grey",
+    "target": "2d-background",
+    "script": "red = 102; green = 102; blue = 102;opacity = 1"
+  },
+  {
+    "name": "overcast",
+    "target": "2d-background",
+    "script": "red = 156; green = 156; blue = 99"
+  },
+  {
+    "name": "shadow-white",
+    "target": "2d-background",
+    "script": "red = 255; green = 255; blue = 255; opacity = 0.05"
+  },
+  {
+    "name": "shadow-grey",
+    "target": "2d-background",
+    "script": "red = 200; green = 200; blue = 200; opacity = 0.05"
+  },
+  {
+    "name": "shadow-dark-grey",
+    "target": "2d-background",
+    "script": "red = 63; green = 60; blue = 30; opacity = 0.01"
+  },
+  {
+    "name": "white",
+    "target": "2d-draw",
+    "script": "red = 255; green = 255; blue = 255"
+  },
+  {
+    "name": "spanish",
+    "target": "2d-draw",
+    "script": "red = 255; green = ~~(Math.sin(r) * 50 + 100); blue = ~~(Math.sin(t) * 50 + 100)"
+  },
+  {
+    "name": "ocean",
+    "target": "2d-draw",
+    "script": "red = 30; green = ~~(Math.sin(Math.sqrt(r * i)) * 50 + 50); blue = ~~(Math.sin(i / 10) * 50 + 100)"
+  },
+  {
+    "name": "sombrero",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? 0 : 200; green = i % 2 ? 0 : t % 100; blue = i % 2 ? t % 200 : 0"
+  },
+  {
+    "name": "chrysanthemum",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? 0 : 200; green = i % 2 ? 0 : ~~(Math.sin(r) * 50 + 100); blue = i % 2 ? ~~(Math.sin(r) * 128 + 128) : 0"
+  },
+  {
+    "name": "dilation",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? 0 : 200; green = i % 2 ? ~~(Math.sin(r / 10) * 128 + 128) : 0; blue = i % 2 ? 0 : ~~(Math.sin(r / 10) * 50 + 100)"
+  },
+  {
+    "name": "explosion",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? 0 : 200; green = i % 2 ? ~~(Math.sin(r / 10) * 128 + 128) : 0; blue = i % 2 ? ~~(Math.sin(r / 10) * 128 + 128) : 0"
+  },
+  {
+    "name": "greenery",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? 0 : 255; green = i % 2 ? 255 : 128; blue = 0"
+  },
+  {
+    "name": "epileptic",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? 0 : ~~(1 / Math.sin(r) * 5) + 240; green = i % 2 ? ~~(1 / Math.sin(r) * 5) + 240 : ~~(1 / Math.sin(r) * 4) + 120; blue = 0"
+  },
+  {
+    "name": "glory",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? 0 : ~~(Math.sin(r / 17) * 100 + 50); green = i % 2 ? ~~(Math.sin(i / 22) * 100 + 21) : ~~(Math.sin(r / 10) * 50 + 100); blue = i % 2 ? ~~(Math.sin(r / 10) * 128 + 128) : ~~(Math.sin(i / 22) * 100 + 21)"
+  },
+  {
+    "name": "spectrum",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? ~~(Math.sin(t / 923) * 128 + 50) : ~~(Math.sin(t / 421) * 128 + 50); green = i % 2 ? ~~(Math.sin(r / 10) * 128 + 128) : ~~(Math.sin(t / 100) * 128 + 50); blue = i % 2 ? ~~(Math.sin(t / 171) * 128 + 50) : ~~(Math.sin(r / 10) * 50 + 100)"
+  },
+  {
+    "name": "matrix",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? ~~(Math.sin(t / 923) * 128) : ~~(Math.sin(t / 421) * 128); green = i % 2 ? ~~(Math.sin(r / 10) * 128) : ~~(Math.sin(t / 100) * 128); blue = i % 2 ? ~~(Math.sin(t / 171) * 128) : ~~(Math.sin(r / 10) * 50)"
+  },
+  {
+    "name": "tides",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? ~~(Math.sin(r / 20) * 20 + 70) : ~~(Math.sin(r / 20) * 50 + 100); green = i % 2 ? ~~(Math.sin(r / 20) * 20 + 70) : ~~(Math.sin(r / 20) * 50 + 100); blue = i % 2 ? ~~(Math.sin(r / 20) * 128 + 128) : ~~(Math.sin(r / 20) * 128 + 128)"
+  },
+  {
+    "name": "grinch",
+    "target": "2d-draw",
+    "script": "red = i % 2 ? ~~(Math.sin(r) * 128 + 128) : 0; green = i % 2 ? 0 : 200; blue = i % 2 ? 0 : ~~(Math.sin(r) * 50 + 100)"
+  },
+  {
+    "name": "summer",
+    "target": "2d-draw",
+    "script": "red = ~~(Math.sin(r * i) * 50 + 100); green = ~~(Math.sin(r) * 100 + 100); blue = 30"
+  },
+  {
+    "name": "eve",
+    "target": "2d-draw",
+    "script": "red = ~~(Math.sin(r) * 150 + 100); green = 255; blue = ~~((t % 1024) / 4)"
+  },
+  {
+    "name": "martian",
+    "target": "2d-draw",
+    "script": "red = ~~(Math.sin(i / 10) * 50 + 100); green = ~~(Math.sin(Math.sqrt(r * i)) * 50 + 50); blue = t % 5"
+  }
+]

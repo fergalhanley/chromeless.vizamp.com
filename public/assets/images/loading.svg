@@ -1,0 +1,62 @@
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="82px" height="73px" viewBox="0 0 82 73" enable-background="new 0 0 82 73" xml:space="preserve">
+<defs>
+    <linearGradient id="linear1" x1="-0.1" y1="-0.1" x2="1.1" y2="1.1">
+        <stop offset="-5.0" stop-color="red">
+          <animate attributeName="offset" from="-5.0" to="1.0" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-4.5" stop-color="yellow">
+          <animate attributeName="offset" from="-4.5" to="1.5" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-3.5" stop-color="green">
+          <animate attributeName="offset" from="-3.5" to="2.5" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-2.5" stop-color="cyan">
+          <animate attributeName="offset" from="-2.5" to="3.5" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-1.5" stop-color="blue">
+          <animate attributeName="offset" from="-1.5" to="4.0" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-5.5" stop-color="magenta">
+          <animate attributeName="offset" from="-0.5" to="5.0" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-6.0" stop-color="red">
+          <animate attributeName="offset" from="0.0" to="5.5" dur="10s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+    <linearGradient id="linear2" x1="-0.1" y1="-0.1" x2="1.1" y2="1.1">
+        <stop offset="-5.0" stop-color="cyan">
+          <animate attributeName="offset" from="-5.0" to="1.0" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-4.5" stop-color="blue">
+          <animate attributeName="offset" from="-4.5" to="1.5" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-3.5" stop-color="magenta">
+          <animate attributeName="offset" from="-3.5" to="2.5" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-2.5" stop-color="red">
+          <animate attributeName="offset" from="-2.5" to="3.5" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-1.5" stop-color="yellow">
+          <animate attributeName="offset" from="-1.5" to="4.0" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-5.5" stop-color="green">
+          <animate attributeName="offset" from="-0.5" to="5.0" dur="10s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="-6.0" stop-color="cyan">
+          <animate attributeName="offset" from="0.0" to="5.5" dur="10s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+</defs>
+<polyline fill="none" stroke="url(#linear1)" stroke-width="3" stroke-linecap="round"
+          stroke-dasharray="100,100" stroke-dashoffset="0.0"
+          points="71.854,63.5 40.677,9.5 9.5,63.5 ">
+    <animate attributeName="stroke-dashoffset" from="1" to="200" dur="1.2s" repeatCount="indefinite"/>
+</polyline>
+<polyline fill="none" stroke="url(#linear2)" stroke-width="3" stroke-linecap="round"
+          stroke-dasharray="100,100" stroke-dashoffset="0.0"
+          points="71.854,9.5 40.677,63.5 9.5,9.5 ">
+    <animate attributeName="stroke-dashoffset" from="1" to="200" dur="0.9s" repeatCount="indefinite"/>
+</polyline>
+</svg>
