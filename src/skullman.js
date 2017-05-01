@@ -9,7 +9,8 @@ import {
 	TextureLoader,
 	Mesh,
 	Color,
-	Group
+	Group,
+	Vector3
 } from 'three';
 import {load3dModel} from './services/load-3d-model.js';
 import CanvasController from './controllers/canvas-controller.js';
@@ -27,12 +28,12 @@ const MAX_PARTICLE_SIZE = 10;
 let particleSize = 1;
 
 const sprites = [
+	'ball',
+	'cube',
 	'vizamp',
 	'ant',
-	'ball',
 	'cactus',
 	'circle',
-	'cube',
 	'face',
 	'face2',
 	'flower',
@@ -42,64 +43,22 @@ const sprites = [
 ];
 let currentSprite = 0;
 
-const views = [
-	{	/* bottom left */
-		left: 0,
-		bottom: 0,
-		width: 0.5,
-		height: 0.5,
-		background: new Color().setRGB(0, 0, 0),
-		eye: [ fieldLength, 0, 0 ],
-		up: [ 0, 0, 1 ],
-		fov: 60,
-		rotation: [ -Math.PI/4, Math.PI/2, 0 ],
-		updateEye: view => {
-			view.eye = [ fieldLength, 0, 0 ];
-		}
-	},
-	{	/* bottom right */
-		left: 0.5,
-		bottom: 0,
-		width: 0.5,
-		height: 0.5,
-		background: new Color().setRGB(0, 0, 0),
-		eye: [ 0, fieldLength, 0 ],
-		up: [ 0, 0, 1 ],
-		fov: 60,
-		rotation: [ -Math.PI/2, 0, -Math.PI/4 ],
-		updateEye: view => {
-			view.eye = [ 0, fieldLength, 0 ];
-		}
-	},
-	{	/* top right */
-		left: 0.5,
-		bottom: 0.5,
-		width: 0.5,
-		height: 0.5,
-		background: new Color().setRGB(0, 0, 0),
-		eye: [ -fieldLength, 0, 0 ],
-		up: [ 0, 0, 1 ],
-		fov: 60,
-		rotation: [ Math.PI/2, -Math.PI/2, Math.PI/4 ],
-		updateEye: view => {
-			view.eye = [ -fieldLength, 0, 0 ];
-		}
-	},
-	{	/* top left */
-		left: 0,
-		bottom: 0.5,
-		width: 0.5,
-		height: 0.5,
-		background: new Color().setRGB(0, 0, 0),
-		eye: [ 0, -fieldLength, 0 ],
-		up: [ 0, 0, 1 ],
-		fov: 60,
-		rotation: [ Math.PI/2, 0, -Math.PI/4 ],
-		updateEye: view => {
-			view.eye = [ 0, -fieldLength, 0 ];
-		}
+const view = {
+	left: 0,
+	bottom: 0,
+	width: 1,
+	height: 1,
+	background: new Color().setRGB(0, 0, 0),
+	eye: [fieldLength, 0, 0],
+	up: [0, 0, 1],
+	fov: 60,
+	rotation: [-Math.PI / 4, Math.PI / 2, 0],
+	updateEye: view => {
+		view.eye = [fieldLength, 0, 0];
 	}
-];
+};
+
+window.view = view;
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
@@ -140,15 +99,12 @@ export function play(_properties) {
 
 	scene = new Scene();
 
-	for (let ii =  0; ii < views.length; ++ii ) {
-		const view = views[ii];
-		const camera = new PerspectiveCamera( view.fov, 1, 1, 10000 );
-		camera.up.x = view.up[ 0 ];
-		camera.up.y = view.up[ 1 ];
-		camera.up.z = view.up[ 2 ];
-		camera.lookAt( scene.position );
-		view.camera = camera;
-	}
+	const camera = new PerspectiveCamera(view.fov, 1, 1, 10000);
+	camera.up.x = view.up[0];
+	camera.up.y = view.up[1];
+	camera.up.z = view.up[2];
+	camera.lookAt(scene.position);
+	view.camera = camera;
 
 	geometry = new InstancedBufferGeometry();
 	geometry.copy(new CircleBufferGeometry(1, 6));
@@ -206,65 +162,65 @@ function animate() {
 	render();
 }
 
-function twirl(){
+function twirl() {
 	let theta = 0.01;
 	const twirlInterval = setInterval(() => {
 		theta += 0.1;
 		spinRate = Math.sin(theta) / 2;
-		if(theta >= Math.PI){
+		if (theta >= Math.PI) {
 			clearInterval(twirlInterval);
 			spinRate = 0.01;
 		}
 	}, 16)
 };
 
-function zoomOut(){
+function zoomOut() {
 	let theta = 0;
 	const popInterval = setInterval(() => {
 		theta += 0.1;
 		fieldLength = DEFAULT_FIELD_LENGTH + Math.sin(theta) * 8000;
-		if(theta >= Math.PI){
+		if (theta >= Math.PI) {
 			clearInterval(popInterval);
 			fieldLength = DEFAULT_FIELD_LENGTH;
 		}
 	}, 16)
 };
 
-function zoomIn(){
+function zoomIn() {
 	let theta = 0;
 	const popInterval = setInterval(() => {
 		theta += 0.05;
 		fieldLength = DEFAULT_FIELD_LENGTH - Math.sin(theta) * 1500;
-		if(theta >= Math.PI){
+		if (theta >= Math.PI) {
 			clearInterval(popInterval);
 			fieldLength = DEFAULT_FIELD_LENGTH;
 		}
 	}, 16)
 };
 
-function changeTexture(){
+function changeTexture() {
 	material.uniforms.map.value = new TextureLoader().load(getSprite());
 	material.needsUpdate = true;
 };
 
-function changeParticleSize(){
+function changeParticleSize() {
 	let theta = 0;
 	const interval = setInterval(() => {
 		theta += 0.05;
 		particleSize = DEFAULT_PARTICLE_SIZE - Math.sin(theta) * MAX_PARTICLE_SIZE;
-		if(theta >= Math.PI){
+		if (theta >= Math.PI) {
 			clearInterval(interval);
 			particleSize = DEFAULT_PARTICLE_SIZE;
 		}
 	}, 16)
 };
 
-function changeColor(){
+function changeColor() {
 	particleSize = (particleSize % MAX_PARTICLE_SIZE) + 1;
 };
 
 document.addEventListener("keydown", (e) => {
-	switch(e.key){
+	switch (e.key) {
 		case '1' :
 			twirl();
 			break;
@@ -353,7 +309,7 @@ function render() {
 		const z = translateArray[i3 + 2] + time;
 		const scl = Math.abs(Math.sin(x * 2.1) + Math.cos(y * 3.2) + Math.sin(z * 4.3));
 
-		scaleArray[i] = scl * 20 * waveForm * properties.radius * particleSize;
+		scaleArray[i] = scl * 5 * waveForm * properties.radius * particleSize;
 
 		color.setHSL(Math.sin(i / scaleArray.length), 1, 0.5);
 
@@ -366,28 +322,22 @@ function render() {
 	scale.needsUpdate = true;
 	colors.needsUpdate = true;
 
-	for (let ii = 0; ii < views.length; ++ii) {
-		const view = views[ii];
-		const camera = view.camera;
-		// view.updateCamera( camera, scene );
-		const left   = Math.floor( windowWidth  * view.left );
-		const bottom = Math.floor( windowHeight * view.bottom );
-		const width  = Math.floor( windowWidth  * view.width );
-		const height = Math.floor( windowHeight * view.height );
-		renderer.setViewport( left, bottom, width, height );
-		renderer.setScissor( left, bottom, width, height );
-		renderer.setScissorTest( true );
-		renderer.setClearColor( view.background );
-		view.updateEye(view);
-		camera.position.x = view.eye[ 0 ];
-		camera.position.y = view.eye[ 1 ];
-		camera.position.z = view.eye[ 2 ];
-		camera.rotation.x = view.rotation[ 0 ];
-		camera.rotation.y = view.rotation[ 1 ];
-		camera.rotation.z = view.rotation[ 2 ];
+	const camera = view.camera;
+	// view.updateCamera( camera, scene );
+	const left = Math.floor(windowWidth * view.left);
+	const bottom = Math.floor(windowHeight * view.bottom);
+	const width = Math.floor(windowWidth * view.width);
+	const height = Math.floor(windowHeight * view.height);
+	renderer.setViewport(left, bottom, width, height);
+	renderer.setScissor(left, bottom, width, height);
+	renderer.setScissorTest(true);
+	renderer.setClearColor(view.background);
+	view.updateEye(view);
+	camera.position.set(view.eye[0], view.eye[1], view.eye[2]);
+	camera.up = new Vector3(0,0,1);
+	camera.lookAt(new Vector3(0,0,0));
 
-		camera.updateProjectionMatrix();
+	camera.updateProjectionMatrix();
 
-		renderer.render(scene, camera );
-	}
+	renderer.render(scene, camera);
 }

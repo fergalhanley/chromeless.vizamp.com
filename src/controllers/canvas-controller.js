@@ -78,7 +78,7 @@ class CanvasController {
 		canvas.style.width = `${size}px`;
 		canvas.style.height = `${size}px`;
 		canvas.style.top = '0';
-		canvas.style.left = `${(window.innerWidth - size) / 2}px`;
+		canvas.style.left = '0';
 		console.log((window.innerWidth - size) / 2);
     }
 
