@@ -57,10 +57,7 @@ class CanvasController {
         const original = document.getElementById('player-canvas');
         const canvas = original.cloneNode(false);
         original.parentNode.replaceChild(canvas, original);
-        canvas.style.top = '0';
-        canvas.style.left = '0';
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
+        this.resizCanvas(canvas);
         canvas.addEventListener('dblclick', this.toggleFullScreen);
         canvas.addEventListener('mousedown', mouseDownHandler);
         canvas.addEventListener('mouseup', mouseUpHandler);
@@ -70,8 +67,19 @@ class CanvasController {
         canvas.addEventListener('contextmenu', function (e) {
             e.preventDefault();
         });
-
+        window.addEventListener("resize", () => this.resizCanvas(canvas));
         return canvas;
+    }
+
+    resizCanvas(canvas) {
+		const size = window.innerHeight;
+		canvas.width = size;
+		canvas.height = size;
+		canvas.style.width = `${size}px`;
+		canvas.style.height = `${size}px`;
+		canvas.style.top = '0';
+		canvas.style.left = `${(window.innerWidth - size) / 2}px`;
+		console.log((window.innerWidth - size) / 2);
     }
 
     toggleFullScreen() {
@@ -84,6 +92,11 @@ class CanvasController {
             this.fullScreen = true;
         }
         onFullScreenChangeCallback(this.fullScreen);
+        setTimeout(() => {
+			const canvas = document.getElementById('player-canvas');
+			this.resizCanvas(canvas);
+        }, 100);
+
     }
 
     onFullscreenChange(callback) {

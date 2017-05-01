@@ -22,7 +22,8 @@ const fragmentShader = 'precision highp float; uniform sampler2D map; varying ve
 const DEFAULT_FIELD_LENGTH = 1300;
 let fieldLength = DEFAULT_FIELD_LENGTH;
 
-const MAX_PARTICLE_SIZE = 5;
+const DEFAULT_PARTICLE_SIZE = 1;
+const MAX_PARTICLE_SIZE = 10;
 let particleSize = 1;
 
 const sprites = [
@@ -141,7 +142,7 @@ export function play(_properties) {
 
 	for (let ii =  0; ii < views.length; ++ii ) {
 		const view = views[ii];
-		const camera = new PerspectiveCamera( view.fov, window.innerWidth / window.innerHeight, 1, 10000 );
+		const camera = new PerspectiveCamera( view.fov, 1, 1, 10000 );
 		camera.up.x = view.up[ 0 ];
 		camera.up.y = view.up[ 1 ];
 		camera.up.z = view.up[ 2 ];
@@ -205,7 +206,7 @@ function animate() {
 	render();
 }
 
-window.twirl = function(){
+function twirl(){
 	let theta = 0.01;
 	const twirlInterval = setInterval(() => {
 		theta += 0.1;
@@ -217,7 +218,7 @@ window.twirl = function(){
 	}, 16)
 };
 
-window.zoomOut = function(){
+function zoomOut(){
 	let theta = 0;
 	const popInterval = setInterval(() => {
 		theta += 0.1;
@@ -229,7 +230,7 @@ window.zoomOut = function(){
 	}, 16)
 };
 
-window.zoomIn = function(){
+function zoomIn(){
 	let theta = 0;
 	const popInterval = setInterval(() => {
 		theta += 0.05;
@@ -241,18 +242,49 @@ window.zoomIn = function(){
 	}, 16)
 };
 
-window.changeTexture = function(){
+function changeTexture(){
 	material.uniforms.map.value = new TextureLoader().load(getSprite());
 	material.needsUpdate = true;
 };
 
-window.changeParticleSize = function(){
+function changeParticleSize(){
+	let theta = 0;
+	const interval = setInterval(() => {
+		theta += 0.05;
+		particleSize = DEFAULT_PARTICLE_SIZE - Math.sin(theta) * MAX_PARTICLE_SIZE;
+		if(theta >= Math.PI){
+			clearInterval(interval);
+			particleSize = DEFAULT_PARTICLE_SIZE;
+		}
+	}, 16)
+};
+
+function changeColor(){
 	particleSize = (particleSize % MAX_PARTICLE_SIZE) + 1;
 };
 
-window.changeColor = function(){
-	particleSize = (particleSize % MAX_PARTICLE_SIZE) + 1;
-};
+document.addEventListener("keydown", (e) => {
+	switch(e.key){
+		case '1' :
+			twirl();
+			break;
+		case '2' :
+			zoomOut();
+			break;
+		case '3' :
+			zoomIn();
+			break;
+		case '4' :
+			changeTexture();
+			break;
+		case '5' :
+			changeParticleSize();
+			break;
+		case '6' :
+			changeColor();
+			break;
+	}
+});
 
 function render() {
 
