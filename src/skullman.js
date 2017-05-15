@@ -24,7 +24,7 @@ const DEFAULT_FIELD_LENGTH = 1300;
 let fieldLength = DEFAULT_FIELD_LENGTH;
 
 const DEFAULT_PARTICLE_SIZE = 1;
-const MAX_PARTICLE_SIZE = 10;
+const MAX_PARTICLE_SIZE = 30;
 let particleSize = 1;
 
 const sprites = [
@@ -85,7 +85,9 @@ let
 	scaleArray,
 	colors,
 	colorsArray,
-	spinRate = 0.01
+	spinRate = 0.01,
+	spinDirection = 1,
+	isAnimating = false
 	;
 
 export function play(_properties) {
@@ -150,7 +152,7 @@ export function play(_properties) {
 }
 
 export function getSprite() {
-	const sprite = `${config.base}/assets/images/sprites/${sprites[currentSprite]}.png`;
+	const sprite = `${config.base}assets/images/sprites/${sprites[currentSprite]}.png`;
 	currentSprite++;
 	currentSprite %= sprites.length;
 	return sprite;
@@ -164,11 +166,13 @@ function animate() {
 
 function twirl() {
 	let theta = 0.01;
+	isAnimating = true;
 	const twirlInterval = setInterval(() => {
 		theta += 0.1;
 		spinRate = Math.sin(theta) / 2;
 		if (theta >= Math.PI) {
 			clearInterval(twirlInterval);
+			isAnimating = false;
 			spinRate = 0.01;
 		}
 	}, 16)
@@ -176,11 +180,13 @@ function twirl() {
 
 function zoomOut() {
 	let theta = 0;
+	isAnimating = true;
 	const popInterval = setInterval(() => {
 		theta += 0.1;
 		fieldLength = DEFAULT_FIELD_LENGTH + Math.sin(theta) * 8000;
 		if (theta >= Math.PI) {
 			clearInterval(popInterval);
+			isAnimating = false;
 			fieldLength = DEFAULT_FIELD_LENGTH;
 		}
 	}, 16)
@@ -188,10 +194,12 @@ function zoomOut() {
 
 function zoomIn() {
 	let theta = 0;
+	isAnimating = true;
 	const popInterval = setInterval(() => {
 		theta += 0.05;
 		fieldLength = DEFAULT_FIELD_LENGTH - Math.sin(theta) * 1500;
 		if (theta >= Math.PI) {
+			isAnimating = false;
 			clearInterval(popInterval);
 			fieldLength = DEFAULT_FIELD_LENGTH;
 		}
@@ -205,18 +213,20 @@ function changeTexture() {
 
 function changeParticleSize() {
 	let theta = 0;
+	isAnimating = true;
 	const interval = setInterval(() => {
 		theta += 0.05;
 		particleSize = DEFAULT_PARTICLE_SIZE - Math.sin(theta) * MAX_PARTICLE_SIZE;
 		if (theta >= Math.PI) {
 			clearInterval(interval);
+			isAnimating = false;
 			particleSize = DEFAULT_PARTICLE_SIZE;
 		}
 	}, 16)
 };
 
 function changeColor() {
-	particleSize = (particleSize % MAX_PARTICLE_SIZE) + 1;
+
 };
 
 document.addEventListener("keydown", (e) => {
@@ -244,14 +254,20 @@ document.addEventListener("keydown", (e) => {
 
 function render() {
 
-	// const td = SoundService.getTimeDomainData();
-	// const soundByte = properties.timeOrFrequency ? fd : td;
-	//
+	// const soundByte = SoundService.getTimeDomainData();
 	// const soundByteCount = soundByte ? soundByte.length : 0;
 
 	// RenderController.processTriggerUpdates(properties, td, fd, updateScript);
 
 	time = performance.now() * 0.0005;
+
+	if (Math.random() < 0.01) {
+		spinDirection = Math.floor(Math.random() * 7) - 3;
+	}
+
+	if (!isAnimating) {
+		spinRate = spinDirection * 0.01;
+	}
 
 	properties.rotateZ += spinRate;
 

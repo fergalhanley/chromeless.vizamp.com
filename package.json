@@ -21,6 +21,7 @@
     "start": "",
     "build": "node ./tools/build.js",
     "test": "",
+    "deploy": "s3cmd sync -c .s3cfg --force --delete-removed --reduced-redundancy --acl-public public/ s3://player.graphica.io/",
     "dev": "nodemon --watch src ./tools/build.js "
   }
 }

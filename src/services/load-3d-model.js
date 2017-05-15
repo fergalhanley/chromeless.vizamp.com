@@ -60,7 +60,7 @@ URL.revokeObjectURL(blobURL);
 
 export function load3dModel(name, callback) {
 	return new Promise( resolve => {
-		fetch(`${config.base}/assets/3d-models/${name}.obj`, { method: 'GET'})
+		fetch(`${config.base}assets/3d-models/${name}.obj`, { method: 'GET'})
 			.then( res => res.text() )
 			.then( data => worker.postMessage(data) );
 

@@ -2550,8 +2550,7 @@ addToUnscopables('entries');
 "use strict";
 
 /* harmony default export */ __webpack_exports__["a"] = {
-	// todo make this detect the server location
-	base: 'http://localhost:3000'
+	base: window.location.href
 };
 
 /***/ }),
@@ -3592,7 +3591,7 @@ URL.revokeObjectURL(blobURL);
 
 function load3dModel(name, callback) {
 	return new Promise(resolve => {
-		fetch(`${__WEBPACK_IMPORTED_MODULE_0__core_config_js__["a" /* default */].base}/assets/3d-models/${name}.obj`, { method: 'GET' }).then(res => res.text()).then(data => worker.postMessage(data));
+		fetch(`${__WEBPACK_IMPORTED_MODULE_0__core_config_js__["a" /* default */].base}assets/3d-models/${name}.obj`, { method: 'GET' }).then(res => res.text()).then(data => worker.postMessage(data));
 
 		worker.onmessage = function (event) {
 			resolve(event.data);
@@ -3624,7 +3623,7 @@ const DEFAULT_FIELD_LENGTH = 1300;
 let fieldLength = DEFAULT_FIELD_LENGTH;
 
 const DEFAULT_PARTICLE_SIZE = 1;
-const MAX_PARTICLE_SIZE = 10;
+const MAX_PARTICLE_SIZE = 30;
 let particleSize = 1;
 
 const sprites = ['ball', 'cube', 'vizamp', 'ant', 'cactus', 'circle', 'face', 'face2', 'flower', 'pattern', 'shark-teeth', 'snowflake'];
@@ -3674,7 +3673,9 @@ let canvas,
     scaleArray,
     colors,
     colorsArray,
-    spinRate = 0.01;
+    spinRate = 0.01,
+    spinDirection = 1,
+    isAnimating = false;
 
 function play(_properties) {
 
@@ -3738,7 +3739,7 @@ function play(_properties) {
 }
 
 function getSprite() {
-	const sprite = `${__WEBPACK_IMPORTED_MODULE_3__core_config_js__["a" /* default */].base}/assets/images/sprites/${sprites[currentSprite]}.png`;
+	const sprite = `${__WEBPACK_IMPORTED_MODULE_3__core_config_js__["a" /* default */].base}assets/images/sprites/${sprites[currentSprite]}.png`;
 	currentSprite++;
 	currentSprite %= sprites.length;
 	return sprite;
@@ -3751,11 +3752,13 @@ function animate() {
 
 function twirl() {
 	let theta = 0.01;
+	isAnimating = true;
 	const twirlInterval = setInterval(() => {
 		theta += 0.1;
 		spinRate = Math.sin(theta) / 2;
 		if (theta >= Math.PI) {
 			clearInterval(twirlInterval);
+			isAnimating = false;
 			spinRate = 0.01;
 		}
 	}, 16);
@@ -3763,11 +3766,13 @@ function twirl() {
 
 function zoomOut() {
 	let theta = 0;
+	isAnimating = true;
 	const popInterval = setInterval(() => {
 		theta += 0.1;
 		fieldLength = DEFAULT_FIELD_LENGTH + Math.sin(theta) * 8000;
 		if (theta >= Math.PI) {
 			clearInterval(popInterval);
+			isAnimating = false;
 			fieldLength = DEFAULT_FIELD_LENGTH;
 		}
 	}, 16);
@@ -3775,10 +3780,12 @@ function zoomOut() {
 
 function zoomIn() {
 	let theta = 0;
+	isAnimating = true;
 	const popInterval = setInterval(() => {
 		theta += 0.05;
 		fieldLength = DEFAULT_FIELD_LENGTH - Math.sin(theta) * 1500;
 		if (theta >= Math.PI) {
+			isAnimating = false;
 			clearInterval(popInterval);
 			fieldLength = DEFAULT_FIELD_LENGTH;
 		}
@@ -3792,19 +3799,19 @@ function changeTexture() {
 
 function changeParticleSize() {
 	let theta = 0;
+	isAnimating = true;
 	const interval = setInterval(() => {
 		theta += 0.05;
 		particleSize = DEFAULT_PARTICLE_SIZE - Math.sin(theta) * MAX_PARTICLE_SIZE;
 		if (theta >= Math.PI) {
 			clearInterval(interval);
+			isAnimating = false;
 			particleSize = DEFAULT_PARTICLE_SIZE;
 		}
 	}, 16);
 };
 
-function changeColor() {
-	particleSize = particleSize % MAX_PARTICLE_SIZE + 1;
-};
+function changeColor() {};
 
 document.addEventListener("keydown", e => {
 	switch (e.key) {
@@ -3831,14 +3838,20 @@ document.addEventListener("keydown", e => {
 
 function render() {
 
-	// const td = SoundService.getTimeDomainData();
-	// const soundByte = properties.timeOrFrequency ? fd : td;
-	//
+	// const soundByte = SoundService.getTimeDomainData();
 	// const soundByteCount = soundByte ? soundByte.length : 0;
 
 	// RenderController.processTriggerUpdates(properties, td, fd, updateScript);
 
 	time = performance.now() * 0.0005;
+
+	if (Math.random() < 0.01) {
+		spinDirection = Math.floor(Math.random() * 7) - 3;
+	}
+
+	if (!isAnimating) {
+		spinRate = spinDirection * 0.01;
+	}
 
 	properties.rotateZ += spinRate;
 
