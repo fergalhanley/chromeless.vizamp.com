@@ -44,22 +44,80 @@ const sprites = [
 ];
 let currentSprite = 0;
 
-const view = {
-	left: 0,
-	bottom: 0,
-	width: 1,
-	height: 1,
-	background: new Color().setRGB(0, 0, 0),
-	eye: [fieldLength, 0, 0],
-	up: [0, 0, 1],
-	fov: 60,
-	rotation: [-Math.PI / 4, Math.PI / 2, 0],
-	updateEye: view => {
-		view.eye = [fieldLength, 0, 0];
-	}
-};
+// const view = {
+// 	left: 0,
+// 	bottom: 0,
+// 	width: 1,
+// 	height: 1,
+// 	background: new Color().setRGB(0, 0, 0),
+// 	eye: [fieldLength, 0, 0],
+// 	up: [0, 0, 1],
+// 	fov: 60,
+// 	rotation: [-Math.PI / 4, Math.PI / 2, 0],
+// 	updateEye: view => {
+// 		view.eye = [fieldLength, 0, 0];
+// 	}
+// };
 
-window.view = view;
+const views = [
+	{	/* bottom left */
+		left: 0,
+		bottom: 0,
+		width: 0.5,
+		height: 0.5,
+		background: new Color().setRGB(0, 0, 0),
+		eye: [ fieldLength, 0, 0 ],
+		up: [ 0, 0, 1 ],
+		fov: 60,
+		rotation: [ -Math.PI/4, Math.PI/2, 0 ],
+		updateEye: view => {
+			view.eye = [ fieldLength, 0, 0 ];
+		}
+	},
+	{	/* bottom right */
+		left: 0.5,
+		bottom: 0,
+		width: 0.5,
+		height: 0.5,
+		background: new Color().setRGB(0, 0, 0),
+		eye: [ 0, fieldLength, 0 ],
+		up: [ 0, 0, 1 ],
+		fov: 60,
+		rotation: [ -Math.PI/2, 0, -Math.PI/4 ],
+		updateEye: view => {
+			view.eye = [ 0, fieldLength, 0 ];
+		}
+	},
+	{	/* top right */
+		left: 0.5,
+		bottom: 0.5,
+		width: 0.5,
+		height: 0.5,
+		background: new Color().setRGB(0, 0, 0),
+		eye: [ -fieldLength, 0, 0 ],
+		up: [ 0, 0, 1 ],
+		fov: 60,
+		rotation: [ Math.PI/2, -Math.PI/2, Math.PI/4 ],
+		updateEye: view => {
+			view.eye = [ -fieldLength, 0, 0 ];
+		}
+	},
+	{	/* top left */
+		left: 0,
+		bottom: 0.5,
+		width: 0.5,
+		height: 0.5,
+		background: new Color().setRGB(0, 0, 0),
+		eye: [ 0, -fieldLength, 0 ],
+		up: [ 0, 0, 1 ],
+		fov: 60,
+		rotation: [ Math.PI/2, 0, -Math.PI/4 ],
+		updateEye: view => {
+			view.eye = [ 0, -fieldLength, 0 ];
+		}
+	}
+];
+
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
@@ -113,12 +171,15 @@ export function play(_properties) {
 
 	scene = new Scene();
 
-	const camera = new PerspectiveCamera(view.fov, 1, 1, 10000);
-	camera.up.x = view.up[0];
-	camera.up.y = view.up[1];
-	camera.up.z = view.up[2];
-	camera.lookAt(scene.position);
-	view.camera = camera;
+	for (let ii =  0; ii < views.length; ++ii ) {
+		const view = views[ii];
+		const camera = new PerspectiveCamera( view.fov, 1, 1, 10000 );
+		camera.up.x = view.up[ 0 ];
+		camera.up.y = view.up[ 1 ];
+		camera.up.z = view.up[ 2 ];
+		camera.lookAt( scene.position );
+		view.camera = camera;
+	}
 
 	geometry = new InstancedBufferGeometry();
 	geometry.copy(new CircleBufferGeometry(1, 6));
@@ -385,22 +446,42 @@ function render() {
 	scale.needsUpdate = true;
 	colors.needsUpdate = true;
 
-	const camera = view.camera;
-	// view.updateCamera( camera, scene );
-	const left = Math.floor(windowWidth * view.left);
-	const bottom = Math.floor(windowHeight * view.bottom);
-	const width = Math.floor(windowWidth * view.width);
-	const height = Math.floor(windowHeight * view.height);
-	renderer.setViewport(left, bottom, width, height);
-	renderer.setScissor(left, bottom, width, height);
-	renderer.setScissorTest(true);
-	renderer.setClearColor(view.background);
-	view.updateEye(view);
-	camera.position.set(view.eye[0], view.eye[1], view.eye[2]);
-	camera.up = new Vector3(0,0,1);
-	camera.lookAt(new Vector3(0,0,0));
+	for (let ii = 0; ii < views.length; ++ii) {
+		const view = views[ii];
+		const camera = view.camera;
+		// view.updateCamera( camera, scene );
+		const left   = Math.floor( windowWidth  * view.left );
+		const bottom = Math.floor( windowHeight * view.bottom );
+		const width  = Math.floor( windowWidth  * view.width );
+		const height = Math.floor( windowHeight * view.height );
+		renderer.setViewport( left, bottom, width, height );
+		renderer.setScissor( left, bottom, width, height );
+		renderer.setScissorTest( true );
+		renderer.setClearColor( view.background );
+		view.updateEye(view);
+		camera.position.set(view.eye[0], view.eye[1], view.eye[2]);
+		camera.up = new Vector3(0,0,1);
+		camera.lookAt(new Vector3(0,0,0));
 
-	camera.updateProjectionMatrix();
+		camera.updateProjectionMatrix();
 
-	renderer.render(scene, camera);
+		renderer.render(scene, camera );
+	}
+
+	// const camera = view.camera;
+	// // view.updateCamera( camera, scene );
+	// const left = Math.floor(windowWidth * view.left);
+	// const bottom = Math.floor(windowHeight * view.bottom);
+	// const width = Math.floor(windowWidth * view.width);
+	// const height = Math.floor(windowHeight * view.height);
+	// renderer.setViewport(left, bottom, width, height);
+	// renderer.setScissor(left, bottom, width, height);
+	// renderer.setScissorTest(true);
+	// renderer.setClearColor(view.background);
+	// view.updateEye(view);
+	// camera.position.set(view.eye[0], view.eye[1], view.eye[2]);
+	// camera.up = new Vector3(0,0,1);
+	// camera.lookAt(new Vector3(0,0,0));
+
+	// camera.updateProjectionMatrix();
 }
