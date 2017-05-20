@@ -1,13 +1,5 @@
-(function () {
-  'use strict';
 
-  angular
-    .module('vizamp')
-    .service('SoundService', SoundService);
-
-  /** @ngInject */
-  function SoundService($timeout, $http, hotkeys, $user, $rootScope, vodAlert, $config,
-                        WebAppService, RenderManager) {
+class SoundService {
 
     var
       trackList = [],

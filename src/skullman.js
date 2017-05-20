@@ -15,7 +15,8 @@ import {
 import {load3dModel} from './services/load-3d-model.js';
 import CanvasController from './controllers/canvas-controller.js';
 import config from './core/config.js';
-// import SoundService from './services/sound-service.js';
+import AudioController from './controllers/audio-controller.js';
+
 
 const vertexShader = 'precision highp float; uniform mat4 modelViewMatrix; uniform mat4 projectionMatrix; attribute vec3 position; attribute vec2 uv; attribute vec3 normal; attribute vec3 translate; attribute float scale; attribute vec3 color; varying vec2 vUv; varying vec3 vColor; void main() { vec4 mvPosition = modelViewMatrix * vec4( translate, 1.0 ); mvPosition.xyz += position * scale; vUv = uv; vColor = color; gl_Position = projectionMatrix * mvPosition; }';
 const fragmentShader = 'precision highp float; uniform sampler2D map; varying vec2 vUv; varying vec3 vColor; void main() { vec4 diffuseColor = texture2D( map, vUv ); gl_FragColor = vec4( diffuseColor.xyz * vColor, diffuseColor.w ); if ( diffuseColor.w < 0.5 ) discard; }';
@@ -92,8 +93,19 @@ let
 
 export function play(_properties) {
 
+	AudioController.listenOnMic();
+
 	canvas = CanvasController.initialize();
 	properties = _properties;
+
+	if (localStorage.getItem("colorformFactor")) {
+		properties.colorformFactor = parseInt(localStorage.getItem("colorformFactor"));
+	}
+	if (localStorage.getItem("waveformFactor")) {
+		properties.waveformFactor = parseInt(localStorage.getItem("waveformFactor"));
+	}
+
+
 	renderer = new WebGLRenderer({
 		canvas: canvas,
 		preserveDrawingBuffer: true
@@ -226,8 +238,26 @@ function changeParticleSize() {
 };
 
 function changeColor() {
-
+	properties.hue += 60;
+	properties.hue %= 360;
+	CanvasController.applyFilter(properties)
 };
+
+function adjustWaveform(value) {
+	properties.waveformFactor += value;
+	if (properties.waveformFactor <= 0) {
+		properties.waveformFactor = 1;
+	}
+	localStorage.setItem("waveformFactor", properties.waveformFactor);
+}
+
+function adjustColorform(value) {
+	properties.colorformFactor += value;
+	if (properties.colorformFactor <= 0) {
+		properties.colorformFactor = 1;
+	}
+	localStorage.setItem("colorformFactor", properties.colorformFactor);
+}
 
 document.addEventListener("keydown", (e) => {
 	switch (e.key) {
@@ -249,13 +279,27 @@ document.addEventListener("keydown", (e) => {
 		case '6' :
 			changeColor();
 			break;
+		case 'ArrowUp' :
+			adjustWaveform(1);
+			break;
+		case 'ArrowDown' :
+			adjustWaveform(-1);
+			break;
+		case 'ArrowLeft' :
+			adjustColorform(1);
+			break;
+		case 'ArrowRight' :
+			adjustColorform(-1);
+			break;
+		default :
+			console.log(e.key);
 	}
 });
 
 function render() {
 
-	// const soundByte = SoundService.getTimeDomainData();
-	// const soundByteCount = soundByte ? soundByte.length : 0;
+	const soundByte = AudioController.getTimeDomainData();
+	const soundByteCount = soundByte ? soundByte.length : 0;
 
 	// RenderController.processTriggerUpdates(properties, td, fd, updateScript);
 
@@ -294,6 +338,9 @@ function render() {
 		vo++;
 		vo %= scaleArray.length;
 	}
+
+	var waveformSoundByte = soundByte;
+	var colorformSoundByte = soundByte;
 
 	for (let i = 0; i < scaleArray.length; i++) {
 

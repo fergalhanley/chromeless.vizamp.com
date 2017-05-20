@@ -123,6 +123,44 @@ class CanvasController {
     getImageDataUrl() {
         return this.canvas.toDataURL('image/png');
     }
+
+    /**
+     * Calculates css filter values and and applies them to the canvas
+     * @param viz
+     */
+    applyFilter(viz) {
+
+      const f = [];
+      const canvas = document.getElementById('player-canvas');
+
+      if (viz.brightness !== 1) {
+          f.push(`brightness(${viz.brightness})`);
+      }
+      if (viz.contrast !== 1) {
+          f.push(`contrast(${viz.contrast})`);
+      }
+      if (viz.blur > 0) {
+          f.push(`blur(${viz.blur}px)`);
+      }
+      if (viz.grayscale > 0) {
+          f.push(`grayscale(${viz.grayscale})`);
+      }
+      if (viz.sepia > 0) {
+          f.push(`sepia(${viz.sepia})`);
+      }
+      if (viz.hue > 0) {
+          f.push(`hue-rotate(${viz.hue}deg)`);
+      }
+      if (viz.invert) {
+          f.push(`invert(1.0)`);
+      }
+      if (viz.saturate !== 1) {
+          f.push(`saturate(${viz.saturate})`);
+      }
+      if (canvas) {
+          canvas.style.filter = canvas.style.webkitFilter = f.join(' ');
+      }
+    }
 }
 
 const canvasController = new CanvasController();

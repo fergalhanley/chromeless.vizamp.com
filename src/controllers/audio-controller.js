@@ -8,11 +8,9 @@ let micSource;
 
 class AudioController {
 
-    playing = false;
-    micOpen = false;
-
     constructor(){
-        super();
+        this.playing = false;
+        this.micOpen = false;
         audio.crossOrigin = "Anonymous";
     }
 
@@ -125,22 +123,21 @@ class AudioController {
             const constraints = { audio: true, video: false };
 
             const successCallback = function (stream) {
-                play();
-                if (!audio.paused) {
-                    audio.pause();
-                    musicSource.disconnect(0);
-                }
+                audio.play();
+                // if (!audio.paused) {
+                //     audio.pause();
+                //     musicSource.disconnect(0);
+                // }
                 micSource = context.createMediaStreamSource(stream);
                 micSource.connect(analyser);
-                this.micOpen = true;
                 if (success) {
                     success();
                 }
             };
 
             const errorCallback = fail || function (err) {
-                    console.error("The following error occurred: " + err.name);
-                };
+                console.error("The following error occurred: " + err.name);
+            };
 
             navigator.getUserMedia(constraints, successCallback, errorCallback);
 
@@ -152,7 +149,7 @@ class AudioController {
 
     closeMic() {
         micSource.disconnect(0);
-        this.micOpen = false;
+        micOpen = false;
     }
 
     setMuted(muted) {

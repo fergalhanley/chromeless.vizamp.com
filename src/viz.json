@@ -83,7 +83,7 @@
     "shiftFilter" : 0,
     "tiltShift_StartY" : 0,
     "tiltShift_StartX" : 0,
-    "colorformFactor" : 1.1,
+    "colorformFactor" : 4,
     "color_Green" : 0,
     "points" : 256,
     "offsetX" : 5,
@@ -135,7 +135,7 @@
     "clearBackground" : false,
     "hue" : 0,
     "bgRotation" : 0,
-    "waveformFactor" : 1,
+    "waveformFactor" : 4,
     "lineOpacity" : 0.19
   },
   "propertyUpdates" : {
