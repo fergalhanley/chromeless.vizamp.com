@@ -2550,7 +2550,7 @@ addToUnscopables('entries');
 "use strict";
 
 /* harmony default export */ __webpack_exports__["a"] = {
-	base: window.location.href
+	base: window.location.origin
 };
 
 /***/ }),
@@ -3817,7 +3817,7 @@ URL.revokeObjectURL(blobURL);
 
 function load3dModel(name, callback) {
 	return new Promise(resolve => {
-		fetch(`${__WEBPACK_IMPORTED_MODULE_0__core_config_js__["a" /* default */].base}assets/3d-models/${name}.obj`, { method: 'GET' }).then(res => res.text()).then(data => worker.postMessage(data));
+		fetch(`${__WEBPACK_IMPORTED_MODULE_0__core_config_js__["a" /* default */].base}/assets/3d-models/${name}.obj`, { method: 'GET' }).then(res => res.text()).then(data => worker.postMessage(data));
 
 		worker.onmessage = function (event) {
 			resolve(event.data);
@@ -4031,7 +4031,7 @@ function play(_properties) {
 }
 
 function getSprite() {
-	const sprite = `${__WEBPACK_IMPORTED_MODULE_3__core_config_js__["a" /* default */].base}assets/images/sprites/${sprites[currentSprite]}.png`;
+	const sprite = `${__WEBPACK_IMPORTED_MODULE_3__core_config_js__["a" /* default */].base}/assets/images/sprites/${sprites[currentSprite]}.png`;
 	currentSprite++;
 	currentSprite %= sprites.length;
 	return sprite;

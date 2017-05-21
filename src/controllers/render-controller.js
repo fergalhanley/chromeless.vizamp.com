@@ -466,5 +466,5 @@ const defaultTextures = [
 
 export function getSprite(properties) {
   properties.texture = properties.texture || 0;
-  return `${config.base}assets/images/sprites/${defaultTextures[properties.texture]}.png`;
+  return `${config.base}/assets/images/sprites/${defaultTextures[properties.texture]}.png`;
 }

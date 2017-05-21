@@ -7,4 +7,4 @@ x Orientate skull to bottom
 - Time delay to animation or animation takes several seconds
 - Gets sad when not interacted with (and return to baseline state) 
 - make server accessible online
-- 
+- count the number of button taps

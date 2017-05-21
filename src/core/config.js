@@ -1,4 +1,4 @@
 
 export default {
-	base: window.location.href,
+	base: window.location.origin,
 };

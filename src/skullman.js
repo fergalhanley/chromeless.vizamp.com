@@ -225,7 +225,7 @@ export function play(_properties) {
 }
 
 export function getSprite() {
-	const sprite = `${config.base}assets/images/sprites/${sprites[currentSprite]}.png`;
+	const sprite = `${config.base}/assets/images/sprites/${sprites[currentSprite]}.png`;
 	currentSprite++;
 	currentSprite %= sprites.length;
 	return sprite;
