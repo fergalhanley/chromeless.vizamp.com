@@ -146,6 +146,8 @@ let
 	colorsArray,
 	spinRate = 0.01,
 	spinDirection = 1,
+	spinTo = Math.PI / 4,
+	isSpinning = true,
 	isAnimating = false
 	;
 
@@ -347,10 +349,10 @@ document.addEventListener("keydown", (e) => {
 			adjustWaveform(-1);
 			break;
 		case 'ArrowLeft' :
-			adjustColorform(1);
+			adjustColorform(-1);
 			break;
 		case 'ArrowRight' :
-			adjustColorform(-1);
+			adjustColorform(1);
 			break;
 		default :
 			console.log(e.key);
@@ -366,15 +368,21 @@ function render() {
 
 	time = performance.now() * 0.0005;
 
-	if (Math.random() < 0.01) {
-		spinDirection = Math.floor(Math.random() * 7) - 3;
-	}
+	if (isSpinning && !isAnimating) {
+		
+		spinRate = spinDirection * 0.1;
+		
+		properties.rotateZ += spinRate;
 
-	if (!isAnimating) {
-		spinRate = spinDirection * 0.01;
+		if (spinRate < 0 && properties.rotateZ < spinTo || spinRate > 0 && properties.rotateZ > spinTo) {
+			isSpinning = false;
+			setTimeout(() => {
+				isSpinning = true;
+				spinDirection = Math.random() > 0.5 ? 1 : -1;
+				spinTo += (Math.PI / 4) * spinDirection * (Math.floor(Math.random() * 3) + 1);
+			}, Math.floor(Math.random() * 5000));
+		}
 	}
-
-	properties.rotateZ += spinRate;
 
 	pivot.rotation.set(
 		properties.rotateX,
